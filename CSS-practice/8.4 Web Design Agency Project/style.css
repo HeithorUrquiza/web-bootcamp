@@ -67,5 +67,14 @@ span{
   .card{
     display: block;
     width: 100%;
+    text-align: justify;
+    margin-bottom: 40px;
+  }
+
+  .card img{
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 15px;
   }
 }
