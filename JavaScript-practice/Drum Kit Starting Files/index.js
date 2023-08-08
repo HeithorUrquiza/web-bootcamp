@@ -3,12 +3,14 @@ let buttons = document.querySelectorAll(".drum")
 for (let index = 0; index < buttons.length; index++) {
     buttons[index].addEventListener("click", function() {
         makeSound(this.innerHTML)
+		pressButton(this.innerHTML)
     })
 }
 
 
 document.addEventListener("keydown", function(event) {
 	makeSound(event.key)
+	pressButton(event.key)
 })
 
 
@@ -45,4 +47,13 @@ function makeSound(key){
 		default:
 			break;
 	}  
+}
+
+function pressButton(currentKey) {
+	let activeButton = document.querySelector("." + currentKey)
+	activeButton.classList.toggle("pressed")
+
+	setTimeout(function(){
+		activeButton.classList.toggle("pressed")
+	}, 100)
 }
