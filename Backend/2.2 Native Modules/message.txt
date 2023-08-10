@@ -1,0 +1,2 @@
+My first file created from Node
+Now trying read this file
