@@ -1,0 +1,16 @@
+{
+  "name": "qr-code-project",
+  "version": "1.0.0",
+  "description": "A project that generate a qr code for a link that user input.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Heithor",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^9.2.10",
+    "qr-image": "^3.2.0"
+  }
+}
