@@ -10,21 +10,21 @@ import * as fs from "node:fs"
 
 
 function generateQRCodeAndSave(url, pathImage, pathFile){
-    const qrCode = qr.image(url);
+  const qrCode = qr.image(url);
 
-    qrCode.pipe(fs.createWriteStream(pathImage))
+  qrCode.pipe(fs.createWriteStream(pathImage))
 
-    qrCode.on('end', () => {
-        console.log('QR Code has been sucessfuly generated');
-        fs.writeFile(pathFile, url, (err) => {
-            if (err) throw err
-            console.log("The file has been saved")
-        })
-    });
+  qrCode.on('end', () => {
+      console.log('QR Code has been sucessfuly generated');
+      fs.writeFile(pathFile, url, (err) => {
+          if (err) throw err
+          console.log("The file has been saved")
+      })
+  });
 
-    qrCode.on('error', error => {
-        console.error('An error ocurred:', error);
-    });
+  qrCode.on('error', error => {
+      console.error('An error ocurred:', error);
+  });
 }
 
 
