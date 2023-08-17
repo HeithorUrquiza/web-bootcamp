@@ -1,0 +1,40 @@
+<%- include("partials/header.ejs") %>
+  <main>
+    <div class="container">
+      <div class="title rectangle">
+        <h1 class="title-section">Work List</h1>
+      </div>
+
+      <% if(locals.toDo.length > 0) {%>
+        <div class="todo rectangle">
+          <div class="content">
+            <input class="checkbox" type="checkbox">
+            <p class="todo-item"><%= toDo[0] %></p>
+          </div>
+        </div>
+
+        <% for(let i = 1; i < toDo.length; i++) { %>
+          <div class="todo-snd rectangle">
+            <div class="content">
+              <input class="checkbox" type="checkbox">
+              <p class="todo-item"><%= toDo[i] %></p>
+            </div>
+          </div>
+        <% } %>
+        <form class="item-after rectangle" action="/submitWork" method="post">
+          <input class="new-item" type="text" name="newItem" placeholder="New item">
+          <button type="submit">+</button>
+        </form>  
+      <% } else { %>
+        <form class="item-before rectangle" action="/submitWork" method="post">
+          <input class="new-item" type="text" name="newItem" placeholder="New item">
+          <button type="submit">+</button>
+        </form>      
+      <% } %>
+    </div>
+  </main>
+  <footer>
+    Copyright © <%= new Date().getFullYear() %>
+  </footer>
+</body>
+</html>
