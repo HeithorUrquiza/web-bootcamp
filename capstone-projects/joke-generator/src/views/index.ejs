@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.
+    0">
+    <link rel="stylesheet" href="/styles/style.css">
+    <title>Joke Generator</title>
+</head>
+<body>
+	<div class="title">
+		<div class="eclipse"></div>
+		<h1>Joke Generator</h1>
+		<div class="eclipse"></div>
+	</div>
+	<div class="display">
+			<% if(content.intro) { %>
+				<p><%= content.intro %></p>
+			<% } %>
+
+			<% if(!content.error) { %>
+				<% if(content.type === "single") { %>
+					<p><%= content.joke %></p>
+				<% } else { %>
+					<p><%= content.setup %> </p><br>
+					<p><%= content.delivery %></p>
+				<% } %>
+			<% } else { %>
+				<p>No matching joke found</p>
+			<% } %>
+	</div>
+	<div class="container">
+		<form action="/" method="POST">
+			<select name="category" class="form-select">
+				<option value="Any">Any</option>
+				<option value="Programming">Code</option>
+				<option value="Misc">Misc</option>
+				<option value="Dark">Dark</option>
+				<option value="Pun">Pun</option>
+				<option value="Spooky">Spooky</option>
+				<option value="Christmas">Christmas</option>
+			</select>
+			<select name="lenguage" class="form-select">
+				<option value="en">English</option>
+				<option value="es">Spanish</option>
+				<option value="pt">Portuguese</option>
+			</select>
+			<select name="type" class="form-select">
+				<option value="single">Single</option>
+				<option value="twopart">Two parts</option>
+			</select>
+			<button type="submit" class="form-submit">
+				Submit
+			</button>
+		</form>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <select name="blackList" class="form-select">
+				<option value="">Any</option>
+				<option value="nsfw">NSFW</option>
+				<option value="religious">Religious</option>
+				<option value="political">Political</option>
+				<option value="racist">Racist</option>
+				<option value="sexist">Sexist</option>
+				<option value="explicit">Explicit</option>
+			</select> -->
