@@ -1,5 +1,6 @@
 import express from "express"
 import bodyParser from "body-parser"
+import mongoose from "mongoose"
 
 const app = express()
 const port = 3000
@@ -20,24 +21,79 @@ function  getCurrentDate(){
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true}))
 
+mongoose.connect("mongodb://127.0.0.1:27017/itemsDB", { useNewUrlParser: true })
+
+const itemsSchema = new mongoose.Schema({
+    chore: String
+})
+
+const Item = mongoose.model("Item", itemsSchema)
+
+const customList = {
+    name: String,
+    items: [itemsSchema]
+}
+
+const List = mongoose.model("List", customList)
 
 /*Today page*/
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     const currentDay = getCurrentDate()
-    const data = {
-        day: currentDay[0],
-        month: currentDay[1],
-        weekday: currentDay[2],
-        toDo: today
+  
+    try {
+        const toDos = await Item.find()
+        console.log("Data colected")
+        res.render("index.ejs", {
+            day: currentDay[0],
+            month: currentDay[1],
+            weekday: currentDay[2],
+            toDo: toDos})
+    } catch (error) {
+        console.log(error)
     }
-    res.render("index.ejs", data)
-    /* today = [] */
 })
 
+
 app.post("/submit", (req, res) => {
-    today.push(req.body.newItem)
+    const itemName = req.body.newItem
+    const item = new Item({
+        chore: itemName
+    })
+
+    try {
+        item.save().then(console.log("Item was added"))
+    } catch (error) {
+        console.log(error)
+    }
+
     res.redirect("/")
 })
+
+
+app.post("/delete", async (req, res) => {
+    const itemToDelete = req.body.checkbox
+    try {
+        const del = await Item.findByIdAndRemove(itemToDelete)
+        console.log("Item deleted successfully")
+    } catch (error) {
+        console.log(error)
+    }
+    res.redirect("/")
+})
+
+
+app.get("/:customPath", async (req, res) => {
+    const customName = req.params.customPath
+    const defalutItems = await Item.find()
+
+    const list = new List({
+        name: customName,
+        items: defalutItems
+    })
+
+    list.save()
+})
+
 
 
 /*Work list page*/

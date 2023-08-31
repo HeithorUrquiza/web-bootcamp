@@ -6,25 +6,31 @@
       </div>
 
       <% if(locals.toDo.length > 0) {%>
-        <div class="todo rectangle">
-          <div class="content">
-            <input class="checkbox" type="checkbox">
-            <p class="todo-item"><%= toDo[0] %></p>
-          </div>
-        </div>
-
-        <% for(let i = 1; i < toDo.length; i++) { %>
-          <div class="todo-snd rectangle">
+        <form action="/delete" method="post">
+          <div class="todo rectangle">
             <div class="content">
-              <input class="checkbox" type="checkbox">
-              <p class="todo-item"><%= toDo[i] %></p>
+              <input class="checkbox" type="checkbox" name="checkbox" value="<%= toDo[0]._id %>" onchange="this.form.submit()">
+              <p class="todo-item"><%= toDo[0].chore %></p>
             </div>
           </div>
+        </form>
+
+        <% for(let i = 1; i < toDo.length; i++){%>
+          <form action="/delete" method="post">
+            <div class="todo-snd rectangle">
+              <div class="content">
+                <input class="checkbox" type="checkbox" name="checkbox" value="<%= toDo[i]._id %>" onchange="this.form.submit()">
+                <p class="todo-item"><%= toDo[i].chore %></p>
+              </div>
+            </div>
+          </form>
         <% } %>
+
         <form class="item-after rectangle" action="/submit" method="post">
           <input class="new-item" type="text" name="newItem" placeholder="New item">
           <button type="submit">+</button>
-        </form>  
+        </form>
+
       <% } else { %>
         <form class="item-before rectangle" action="/submit" method="post">
           <input class="new-item" type="text" name="newItem" placeholder="New item">
