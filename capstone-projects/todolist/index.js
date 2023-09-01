@@ -4,8 +4,6 @@ import mongoose from "mongoose"
 
 const app = express()
 const port = 3000
-let today = []
-let work = []
 
 function  getCurrentDate(){
     const date = new Date()
@@ -18,6 +16,8 @@ function  getCurrentDate(){
     return [day, months[month], weekdays[weekday]]
 }
 
+app.set('view engine', 'ejs');
+
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true}))
 
@@ -28,13 +28,7 @@ const itemsSchema = new mongoose.Schema({
 })
 
 const Item = mongoose.model("Item", itemsSchema)
-
-const customList = {
-    name: String,
-    items: [itemsSchema]
-}
-
-const List = mongoose.model("List", customList)
+const Work = mongoose.model("Work", itemsSchema)
 
 /*Today page*/
 app.get("/", async (req, res) => {
@@ -71,9 +65,9 @@ app.post("/submit", (req, res) => {
 
 
 app.post("/delete", async (req, res) => {
-    const itemToDelete = req.body.checkbox
     try {
-        const del = await Item.findByIdAndRemove(itemToDelete)
+        const itemToDelete = req.body.checkbox
+        await Item.findByIdAndRemove(itemToDelete)
         console.log("Item deleted successfully")
     } catch (error) {
         console.log(error)
@@ -82,30 +76,44 @@ app.post("/delete", async (req, res) => {
 })
 
 
-app.get("/:customPath", async (req, res) => {
-    const customName = req.params.customPath
-    const defalutItems = await Item.find()
-
-    const list = new List({
-        name: customName,
-        items: defalutItems
-    })
-
-    list.save()
-})
-
-
 
 /*Work list page*/
-app.get("/work", (req, res) => {
-    res.render("work.ejs", {toDo: work})
-    /* work = [] */
+app.get("/work", async (req, res) => {
+    try {
+        const workList = await Work.find()
+        res.render("work.ejs", {toDo: workList})
+    } catch (error) {
+        console.log(error)
+    }
 })
 
-app.post("/submitWork", (req, res) => {
-    work.push(req.body.newItem)
+
+app.post("/submitWork", async (req, res) => {
+    const work = req.body.newItem
+    const newWork = new Work({
+        chore: work
+    })
+
+    try {
+        newWork.save().then(console.log("New chore added"))
+    } catch (error) {
+        console.log(error)
+    }
+
     res.redirect("/work")
 })
+
+
+app.post("/deleteWork", async (req, res) => {
+    try {
+        const workToDelete = req.body.checkbox;
+        await Work.findByIdAndRemove(workToDelete);
+        console.log("Item deleted successfully");
+    } catch (error) {
+        console.log(error);
+    }
+    res.redirect("/work");
+});
 
 
 app.listen(port, () => {
